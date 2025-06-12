@@ -24,11 +24,21 @@ const addEmployee = async (req, res) => {
     res.status(200).json({ statusCode: 200, message: "Employee added successfully" });
 };
 
-// Delete employee
 const deleteEmployee = async (req, res) => {
-    await Employee.deleteOne({ id: req.params.id });
-    res.status(200).json({ statusCode: 200, message: "Employee deleted successfully" });
+    try {
+        const result = await Employee.deleteOne({ id: req.params.id });
+
+        if (result.deletedCount === 0) {
+            return res.status(404).json({ statusCode: 404, message: "Employee not found" });
+        }
+
+        res.status(200).json({ statusCode: 200, message: "Employee deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting employee:", error);
+        res.status(500).json({ statusCode: 500, message: "Internal Server Error" });
+    }
 };
+
 
 // Fetch one employee
 const fetchEmployee = async (req, res) => {

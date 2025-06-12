@@ -4,7 +4,16 @@ const employeeRoutes = require('./routes/employeeRoutes');
 const db = require('./DB/connectionString');
 
 const app = express();
-app.use(cors({ origin: 'http://localhost:3000' }));
+
+
+app.use(cors({
+  origin: "http://localhost:5175", // Allow requests from your frontend
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type"]
+}));
+
+
+
 app.use(express.json());
 
 app.use('/', employeeRoutes);
